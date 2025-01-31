@@ -43,7 +43,7 @@ function ReboundEntities.Register(entityData)
     assert(entityData, "Entity data is nil")
     local position = entityData.position
     assert(position, "Position is nil")
-    local id = entityData.id or CreateUniqueId(Entities)
+    local id = entityData.id or Ids.CreateUniqueId(Entities)
     entityData.isServer = isServer
     entityData.id = tostring(id)
     local entityData = setmetatable(entityData, {
