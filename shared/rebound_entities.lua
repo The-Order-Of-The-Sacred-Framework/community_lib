@@ -145,7 +145,7 @@ function ReboundEntities.Create(entityData, src)
     assert(entity.position, "Entity position is nil")
     entity.rotation = entity.rotation or vector3(0, 0, 0)
     src = src and tonumber(src) or -1
-    TriggerClientEvent("mrc-entity:client:CreateReboundEntity", src, entity)
+    TriggerClientEvent(GetCurrentResourceName() ..":client:CreateReboundEntity", src, entity)
     return entity
 end
 
@@ -164,7 +164,7 @@ end
 function ReboundEntities.Refresh(src)
     src= tonumber(src)
     local list = ReboundEntities.GetAccessibleList(src)
-    TriggerClientEvent("mrc-entity:client:CreateReboundEntities", src, list)
+    TriggerClientEvent(GetCurrentResourceName() ..":client:CreateReboundEntities", src, list)
 end
 
 --- Delete a rebound entity
@@ -172,7 +172,7 @@ end
 --- @return boolean
 function ReboundEntities.Delete(id)
     Unregister(id)
-    TriggerClientEvent("mrc-entity:client:DeleteReboundEntity", -1, id)
+    TriggerClientEvent(GetCurrentResourceName() ..":client:DeleteReboundEntity", -1, id)
 end
 
 -- Create multiple rebound entities
@@ -196,7 +196,7 @@ function ReboundEntities.CreateMultiple(entityDatas, src, restricted)
         end
     end
    
-    TriggerClientEvent("mrc-entity:client:CreateReboundEntities", src, _entityDatas)
+    TriggerClientEvent(GetCurrentResourceName() ..":client:CreateReboundEntities", src, _entityDatas)
     return _entityDatas
 end
 
@@ -209,7 +209,7 @@ function ReboundEntities.SetSyncData(entityData, key, value)
         value = entityData.onSyncKeyChange(entityData, key, value) or value
     end
     entityData[key] = value
-    TriggerClientEvent("mrc-entity:client:SetReboundSyncData", -1, entityData.id, key, value)
+    TriggerClientEvent(GetCurrentResourceName() ..":client:SetReboundSyncData", -1, entityData.id, key, value)
 end
 
 function ReboundEntities.GetAccessibleList(src)
@@ -425,23 +425,23 @@ local function DeleteMultipleFromServer(ids)
 end
 -- -- -- -- -- -- -- -- -- --
 
-RegisterNetEvent("mrc-entity:client:CreateReboundEntity", function(entityData)
+RegisterNetEvent(GetCurrentResourceName() ..":client:CreateReboundEntity", function(entityData)
     ReboundEntities.CreateClient(entityData)
 end)
 
-RegisterNetEvent("mrc-entity:client:DeleteReboundEntity", function(id)
+RegisterNetEvent(GetCurrentResourceName() ..":client:DeleteReboundEntity", function(id)
     DeleteFromServer(id)
 end)
 
-RegisterNetEvent("mrc-entity:client:CreateReboundEntities", function(entityDatas)
+RegisterNetEvent(GetCurrentResourceName() ..":client:CreateReboundEntities", function(entityDatas)
     ReboundEntities.CreateMultipleClient(entityDatas)
 end)
 
-RegisterNetEvent("mrc-entity:client:DeleteReboundEntities", function(ids)
+RegisterNetEvent(GetCurrentResourceName() ..":client:DeleteReboundEntities", function(ids)
     DeleteMultipleFromServer(ids)
 end)
 
-RegisterNetEvent("mrc-entity:client:SetReboundSyncData", function(id, key, value)
+RegisterNetEvent(GetCurrentResourceName() ..":client:SetReboundSyncData", function(id, key, value)
     local entityData = ReboundEntities.GetById(id)
     if not entityData then return end
     if entityData.onSyncKeyChange then

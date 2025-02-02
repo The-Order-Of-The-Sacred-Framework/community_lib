@@ -1,4 +1,4 @@
-local loadedModules = {}
+loadedModules = {}
 
 function Require(modulePath, resourceName)
     if resourceName and type(resourceName) ~= "string" then
